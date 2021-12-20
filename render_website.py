@@ -1,5 +1,7 @@
-from http.server import HTTPServer, SimpleHTTPRequestHandler
+#from http.server import HTTPServer, SimpleHTTPRequestHandler
 import json
+
+from livereload import Server, shell
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
@@ -11,7 +13,7 @@ def load_books_description(path):
     return json.loads(books_description)
 
 
-def main():
+def on_reload():
     books_description = load_books_description(
         'my_books/description/json/descriptions.json'
     )
@@ -29,8 +31,13 @@ def main():
     with open('index.html', 'w', encoding="utf8") as file:
         file.write(rendered_page)
 
-    server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
-    server.serve_forever()
+
+def main():
+    on_reload()
+
+    server = Server()
+    server.watch('template.html', on_reload)
+    server.serve(root='.')
 
 
 if __name__ == '__main__':
