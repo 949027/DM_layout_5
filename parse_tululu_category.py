@@ -28,13 +28,12 @@ def download_image(image_url, images_path):
         file.write(response.content)
 
 
-def download_txt(book_title, book_id, books_path):
+def download_txt(book_id, books_path):
     book_url = "https://tululu.org/txt.php"
     payload = {'id': book_id}
 
-    filename = '{}. {}'.format(book_id, book_title)
-    clean_filename = f"{sanitize_filename(filename)}.txt"
-    path = Path(books_path, clean_filename)
+    filename = f'{book_id}.txt'
+    path = Path(books_path, filename)
 
     response = requests.get(book_url, params=payload)
     response.raise_for_status()
@@ -46,7 +45,7 @@ def download_txt(book_title, book_id, books_path):
     return path
 
 
-def parse_book_description(soup):
+def parse_book_description(soup, book_id):
     title_tag = soup.select_one('h1')
     title_text = title_tag.text
     title, author = title_text.split(sep='::')
@@ -65,6 +64,7 @@ def parse_book_description(soup):
     )
 
     book_description = {
+        'id': book_id,
         'title': title.strip(),
         'author': author.strip(),
         'genres': genres,
@@ -170,12 +170,11 @@ def main():
                 check_for_redirect(response)
                 soup = BeautifulSoup(response.text, 'lxml')
 
-                book_description = parse_book_description(soup)
+                book_description = parse_book_description(soup, book_id)
                 books_descriptions.append(book_description)
 
                 if not user_args.skip_txt:
                     download_txt(
-                        book_description['title'],
                         book_id,
                         books_path,
                     )

@@ -28,7 +28,7 @@ def on_reload(books_description):
 
 
 def main():
-    description_path = 'my_books/description/json/descriptions.json'
+    description_path = 'description/descriptions.json'
     books_description = list(chunked(
         load_books_description(description_path),
         2,
