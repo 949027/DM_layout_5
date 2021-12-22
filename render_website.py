@@ -1,9 +1,9 @@
-#from http.server import HTTPServer, SimpleHTTPRequestHandler
 import json
 
 from livereload import Server, shell
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+from more_itertools import chunked
 
 
 def load_books_description(path):
@@ -13,12 +13,7 @@ def load_books_description(path):
     return json.loads(books_description)
 
 
-def on_reload():
-    books_description = load_books_description(
-        'my_books/description/json/descriptions.json'
-    )
-    print(books_description)
-
+def on_reload(books_description):
     env = Environment(
         loader=FileSystemLoader('.'),
         autoescape=select_autoescape(['html', 'xml'])
@@ -33,7 +28,13 @@ def on_reload():
 
 
 def main():
-    on_reload()
+    description_path = 'my_books/description/json/descriptions.json'
+    books_description = list(chunked(
+        load_books_description(description_path),
+        2,
+    ))
+
+    on_reload(books_description)
 
     server = Server()
     server.watch('template.html', on_reload)
