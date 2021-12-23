@@ -13,7 +13,7 @@ def load_books_description(path):
     return json.loads(books_description)
 
 
-def on_reload(books_description, page_number, page_path):
+def on_reload(books_description, page_path, page_number, pages_amount):
     env = Environment(
         loader=FileSystemLoader('.'),
         autoescape=select_autoescape(['html', 'xml'])
@@ -21,7 +21,11 @@ def on_reload(books_description, page_number, page_path):
 
     template = env.get_template('template.html')
 
-    rendered_page = template.render(books_description=books_description)
+    rendered_page = template.render(
+        books_description=books_description,
+        current_page_number=page_number,
+        pages_amount=pages_amount,
+    )
 
     with open(page_path, 'w', encoding="utf8") as file:
         file.write(rendered_page)
@@ -36,14 +40,17 @@ def main():
         load_books_description(description_path),
         10,
     ))
+    pages_amount = len(splited_all_description)
+
     for page_number, page_description in enumerate(
             splited_all_description,
             1,
     ):
         splited_page_description = list(chunked(page_description, 2))
         page_path = f'pages/index{page_number}.html'
+        print(splited_page_description, page_path, page_number, pages_amount)
 
-        on_reload(splited_page_description, page_number, page_path)
+        on_reload(splited_page_description, page_path, page_number, pages_amount)
 
     server = Server()
     server.watch('template.html', on_reload)
