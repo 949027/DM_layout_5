@@ -20,7 +20,7 @@ def on_reload(books_description, page_path, page_number, pages_amount):
     )
 
     template = env.get_template('template.html')
-
+    print(books_description)
     rendered_page = template.render(
         books_description=books_description,
         current_page_number=page_number,
@@ -48,7 +48,6 @@ def main():
     ):
         splited_page_description = list(chunked(page_description, 2))
         page_path = f'pages/index{page_number}.html'
-        print(splited_page_description, page_path, page_number, pages_amount)
 
         on_reload(splited_page_description, page_path, page_number, pages_amount)
 
