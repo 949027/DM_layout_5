@@ -170,14 +170,15 @@ def main():
                 check_for_redirect(response)
                 soup = BeautifulSoup(response.text, 'lxml')
 
-                book_description = parse_book_description(soup, book_id)
-                books_descriptions.append(book_description)
-
                 if not user_args.skip_txt:
                     download_txt(
                         book_id,
                         books_path,
                     )
+
+                book_description = parse_book_description(soup, book_id)
+                books_descriptions.append(book_description)
+
                 if not user_args.skip_imgs:
                     image_url = book_description['cover']
                     download_image(image_url, images_path)
