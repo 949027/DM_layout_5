@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>My books</title>
   </head>
   <body>
 
@@ -55,7 +55,11 @@
       <div class="card mb-3" style="max-width: 540px;">
     <div class="row no-gutters">
       <div class="col-md-4">
-        <img src="{{description.cover}}" alt="{{description.title}}" width="150" height="200">
+        {% if description['cover'] == "https://tululu.org/images/nopic.gif" %}
+        <img src="../images/nopic.gif" alt="{{description.title}}" width="150" height="200">
+        {% else %}
+        <img src="../images/{{description.id}}.jpg" alt="{{description.title}}" width="150" height="200">
+        {% endif %}
       </div>
       <div class="col-md-8">
         <div class="card-body">
@@ -66,7 +70,7 @@
               <h6><span class="badge badge-light">{{genre}}</span></h6>
             {% endfor %}
 
-          <a href="books/{{description.id}}.txt" target="_blank">Читать</a>
+          <a href="../books/{{description.id}}.txt" target="_blank">Читать</a>
         </div>
       </div>
     </div>
