@@ -6,7 +6,6 @@ from urllib.parse import urljoin, urlsplit, unquote
 from pathlib import Path
 
 from bs4 import BeautifulSoup
-from pathvalidate import sanitize_filename
 import requests
 
 

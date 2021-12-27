@@ -1,7 +1,7 @@
 import json
 from os import makedirs
 
-from livereload import Server, shell
+from livereload import Server
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from more_itertools import chunked
 
@@ -36,7 +36,6 @@ def on_reload():
             columns_amount,
         ))
         page_path = f'pages/index{page_number}.html'
-
 
         env = Environment(
             loader=FileSystemLoader('.'),
