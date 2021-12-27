@@ -41,8 +41,9 @@ def main():
         load_books_description(description_path),
         page_books_amount,
     ))
+
     pages_amount = len(splited_all_description)
-    print(splited_all_description)
+
     for page_number, page_description in enumerate(
             splited_all_description,
             1,
@@ -57,7 +58,7 @@ def main():
 
     server = Server()
     server.watch('template.html', on_reload)
-    server.serve(default_filename='pages/index1.html')
+    server.serve(root='pages', default_filename='index1.html')
 
 
 if __name__ == '__main__':
