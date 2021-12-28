@@ -12,6 +12,11 @@ def on_reload():
     columns_amount = 2
     description_path = 'description/descriptions.json'
 
+    env = Environment(
+        loader=FileSystemLoader('.'),
+        autoescape=select_autoescape(['html', 'xml'])
+    )
+
     with open(description_path, 'r') as file:
         books_description = json.load(file)
 
@@ -31,11 +36,6 @@ def on_reload():
             columns_amount,
         ))
         page_path = f'pages/index{page_number}.html'
-
-        env = Environment(
-            loader=FileSystemLoader('.'),
-            autoescape=select_autoescape(['html', 'xml'])
-        )
 
         template = env.get_template('template.html')
         rendered_page = template.render(
