@@ -6,22 +6,17 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from more_itertools import chunked
 
 
-def load_books_description(path):
-    with open(path, 'r') as file:
-        books_description = file.read()
-
-    return json.loads(books_description)
-
-
 def on_reload():
     makedirs('pages', exist_ok=True)
     page_books_amount = 10
     columns_amount = 2
-
     description_path = 'description/descriptions.json'
 
+    with open(description_path, 'r') as file:
+        books_description = json.load(file)
+
     splited_all_description = list(chunked(
-        load_books_description(description_path),
+        books_description,
         page_books_amount,
     ))
 
@@ -58,7 +53,7 @@ def main():
 
     server = Server()
     server.watch('template.html', on_reload)
-    server.serve(root='pages', default_filename='index1.html')
+    server.serve(root='.', default_filename='pages/index1.html')
 
 
 if __name__ == '__main__':
