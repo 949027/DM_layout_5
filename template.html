@@ -60,9 +60,9 @@
     <div class="row no-gutters">
       <div class="col-md-4">
         {% if description['cover'] == "https://tululu.org/images/nopic.gif" %}
-        <img src="../static/nopic.gif"|urlencode alt="{{description.title}}" width="150" height="200">
+        <img src="../static/nopic.gif" alt="{{description.title}}" width="150" height="200">
         {% else %}
-        <img src="../images/{{description.id}}.jpg" alt="{{description.title}}" width="150" height="200">
+        <img src="../images/{{description.id|urlencode}}.jpg" alt="{{description.title}}" width="150" height="200">
         {% endif %}
       </div>
       <div class="col-md-8">
@@ -74,7 +74,7 @@
               <h6><span class="badge badge-light">{{genre}}</span></h6>
             {% endfor %}
 
-          <a href="../books/{{description.id}}.txt"|urlencode target="_blank">Читать</a>
+          <a href="../books/{{description.id|urlencode}}.txt" target="_blank">Читать</a>
         </div>
       </div>
     </div>
